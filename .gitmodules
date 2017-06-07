@@ -1,0 +1,3 @@
+[submodule "CommonNote-note"]
+	path = CommonNote-note
+	url = https://github.com/NeX-Studio/CommonNote-note.git
