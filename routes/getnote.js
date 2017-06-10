@@ -6,10 +6,9 @@ var fs = require('fs');
 // Md
 // pdf
 // return
-function markdown2html(path, res){
-	var result = '';
+function markdown2html(path, res, info){
 	let md = new Markdown();
-	var opts = {title: 'File $BASENAME in $DIRNAME'};
+	let opts = {};
 	// var opts
 	console.log("[*] Start converting",path,"into html");
 	md.setEncoding('UTF8');
@@ -27,8 +26,10 @@ function markdown2html(path, res){
 		md.pipe(res);
 	})
 }
-function pdf2html(path){
-	return;
+function pdf2html(path,res,info){
+	res.send(["<h2>",info.title,"</h2>","By",info.author,"<a src='mailto:",info.email,"'>Email</a>","<object data='",path,"' type='application/pdf' width=100% height=100%>\
+		<p>This browser does not support inline PDFs. Please download the PDF to view it: \
+		<a href='",path,"'>Download PDF</a></p></object>"].join(" "));
 }
 
 
@@ -48,25 +49,42 @@ router.get('/:subject/:note',function(req,res,next){
 			}
 			res.render('noteErr',{title:err.code, err:err});
 		}
+
+		var info = JSON.parse(data);
 		// Set header
 		res.set('Content-Type', 'text/plain;charset=utf-8');
 
+		// Load basic intro about note and author
+		fs.readFile(filedir+"/intro.md",function(err,data){
+			if(err){
+				switch(err.code){
+					case 'ENOENT':
+						console.log("[-] Invalid note, Check git pull request");
+						break;
+					default:
+						console.log("[-] Error:",err);
+						break;
+				}
+			res.render('noteErr',{title:err.code, err:err});
+			}
+			markdown2html(filedir+"/intro.md",res,info);
+		
 
-		let info = JSON.parse(data);
+		
 		switch(info.notetype.toLowerCase()){
 			case "pdf":
-				var content = pdf2html();
+				pdf2html(filedir+"/content.pdf",res,info);
 				console.log("[+] Request",info.title,"successfully in pdf form");
 				break;
 			case "markdown":
-				var content = markdown2html(filedir+"/content.md",res);
+				markdown2html(filedir+"/content.md",res,info);
 				console.log("[+] Request",info.title,"successfully in markdown form");
 				break;
 			default:
 				// Not support filetype
 				res.render('noteErr',{title:"Not support filetype",err:""})
 				break;
-		}
-	})
+		}});
+	});
 })
 module.exports = router;
