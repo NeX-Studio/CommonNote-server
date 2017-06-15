@@ -1,10 +1,76 @@
 doctype html
 html
   head
-    title= title
-    link(rel='stylesheet', href='http://cdn.static.runoob.com/libs/foundation/5.5.3/css/foundation.min.css')
+    title CommonNote - Note for everyone
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    // Download CSS file
+    link(rel='stylesheet', href='css/foundation.min.css')
+    link(rel='stylesheet', href='http://static.runoob.com/assets/foundation-icons/foundation-icons.css')
+    link(rel='shortcut icon', href='images/favicon.ico')
+  body(style='padding-top:0px')
+    .off-canvas-wrap(data-offcanvas='')
+      .inner-wrap
+        div(data-magellan-expedition='fixed')
+          nav.top-bar(data-topbar='')
+            ul.title-area
+              li.name
+                // Switch to logo
+                h1
+                  a(href='/') CommonNote
+              li.toggle-topbar.menu-icon
+                a(href='#')
+                  span
+            section.top-bar-section
+              ul.right.row
+                // Grid
+                li.small-10.medium-9.columns(style='padding-right:0')
+                  input(type='text', placeholder='Search')
+                li.small-2.medium-3.columns
+                  a.button.fi-magnifying-glass
+              ul.right.row.text-center
+                li.small-3.columns(style='padding:0px')
+                  a.left-off-canvas-toggle.fi-results.show-for-small-only(href='#')
+                li.small-3.medium-4.columns(style='padding:0px')
+                  a.small.fi-lightbulb
+                li.small-3.medium-4.columns(style='padding:0px')
+                  a.fi-eye.active
+                li.small-3.medium-4.columns(style='padding:0px')
+                  a.fi-arrow-up(href='#content')
+        aside.left-off-canvas-menu
+          // Sync with side bar
+          ul.off-canvas-list.test
+            li
+              label Side Bar
+            li
+              a(href='#') Link 1
+            li
+              a(href='#') Link 2
+        .row.main-section
+          #content.medium-10.columns
+            block content
+          .medium-2.columns(style='background-color:#f1f1f1;')
+            ul.side-nav.hide-for-small-only.text-center
+              li
+                a(href='#') Top Views
+                br
+                p Heeee
+              li
+                a(href='#') Daily Recommendation
+                br
+                p Heeee
+              li
+                a(href='#') Last Read
+                br
+                p Heeee
+        a.exit-off-canvas
+    // Scripts
+    // <script src="https://use.fontawesome.com/aa2cf35281.js"></script>
     script(src='http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js')
-    script(src='http://cdn.static.runoob.com/libs/foundation/5.5.3/js/foundation.min.js')
+    script(src='js/foundation.min.js')
     script(src='http://cdn.static.runoob.com/libs/foundation/5.5.3/js/vendor/modernizr.js')
-  body
-    block content
+    script.
+      $(document).ready(function () {
+      $(document).foundation();
+      })
+
